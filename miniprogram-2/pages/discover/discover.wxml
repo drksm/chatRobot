@@ -1,0 +1,9 @@
+<view class="container">
+  <view class="discover-content">
+    <!-- 在此处添加发现页面的内容 -->
+  </view>
+  <view class="tab-bar">
+    <navigator class="tab-item" url="/pages/chat/chat" hover-class="none">聊天</navigator>
+    <navigator class="tab-item" url="/pages/discover/discover" hover-class="none">发现</navigator>
+  </view>
+</view>

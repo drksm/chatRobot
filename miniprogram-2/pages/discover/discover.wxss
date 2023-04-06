@@ -1,0 +1,28 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  background-color: #f0f0f0;
+}
+
+.discover-content {
+  flex: 1;
+  padding: 10px;
+  overflow-y: scroll;
+  background-color: #f0f0f0;
+}
+
+.tab-bar {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 50px;
+  background-color: #ffffff;
+}
+
+.tab-item {
+  padding: 10px;
+  font-size: 14px;
+  color: #666;
+}

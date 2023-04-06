@@ -1,0 +1,8 @@
+<view class="tab-bar">
+  <view class="tab-item" bindtap="switchToChat">
+    <text class="tab-item-text">聊天</text>
+  </view>
+  <view class="tab-item" bindtap="switchToDiscover">
+    <text class="tab-item-text">发现</text>
+  </view>
+</view>

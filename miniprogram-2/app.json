@@ -1,0 +1,26 @@
+{
+  "pages":[
+    "pages/chat/chat",
+    "pages/discover/discover"
+  ],
+  "window":{
+    "backgroundTextStyle":"light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "Weixin",
+    "navigationBarTextStyle":"black"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "tabBar": {
+    "list": [
+      {
+        "pagePath": "pages/chat/chat",
+        "text": "聊天"
+      },
+      {
+        "pagePath": "pages/discover/discover",
+        "text": "发现"
+      }
+    ]
+  }
+}

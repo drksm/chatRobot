@@ -1,0 +1,27 @@
+<view class="container">
+  <scroll-view class="chat-list" scroll-y>
+    <view class="message" wx:for="{{chatData}}" wx:key="id">
+      <view class="user-info" wx:if="{{item.type === 'user'}}">
+        <text class="message-text">{{item.message}}</text>
+        <image class="user-avatar" src="/assets/images/user-avatar.png" />
+      </view>
+      <view class="robot-info" wx:if="{{item.type === 'robot'}}">
+        <image class="robot-avatar" src="/assets/images/robot-avatar.png" />
+        <text class="message-text">{{item.message}}</text>
+      </view>
+    </view>
+  </scroll-view>
+  <view class="input-container">
+    <input
+      class="input"
+      placeholder="请输入内容"
+      value="{{inputValue}}"
+      bindinput="onInput"
+      confirm-type="send"
+      bindconfirm="onSend"
+    />
+    <button class="send-button" bindtap="onSend">发送</button>
+  </view>
+
+ 
+</view>
