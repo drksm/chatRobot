@@ -1,10 +1,10 @@
-const baseURL = "https://5a427a3c-4ded-4a1f-8db8-4852c5f28fa5.mock.pstmn.io"; // 替换为您的API域名
+const baseURL = "https://aigkzy.com:9000"; // 替换为您的API域名
 
 function request(options) {
   return new Promise((resolve, reject) => {
     wx.request({
       url: baseURL + options.url,
-      method: options.method || "GET",
+      method: options.method || "POST",
       data: options.data || {},
       header: {
         "content-type": "application/json", // 设置默认请求头

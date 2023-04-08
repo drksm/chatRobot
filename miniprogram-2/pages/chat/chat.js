@@ -9,21 +9,13 @@ Page({
     chatData: [],
   },
   onLoad: function () {
-    this.fetchChatData(); // 页面加载时获取聊天数据
+    this.loadChatDataFromStorage();
   },
-  fetchChatData: function () {
-    request({
-      url: "", // 根据您的模拟API定义相应的请求URL
-      method: "GET",
-    })
-      .then((data) => {
-        console.log("获取聊天数据成功: ", data);
-        // 在此处处理成功的逻辑，如更新页面数据等
-      })
-      .catch((err) => {
-        console.error("获取聊天数据失败: ", err);
-        // 在此处处理失败的逻辑，如显示错误提示等
-      });
+  loadChatDataFromStorage: function () {
+    const storedChatData = wx.getStorageSync("chatData");
+    if (storedChatData) {
+      this.setData({ chatData: storedChatData });
+    }
   },
   onInput: function (e) {
     this.setData({
@@ -48,41 +40,55 @@ Page({
       message: inputValue,
       timestamp: new Date(),
     };
+    const updatedChatData = [...chatData, newMessage];
     this.setData({
-      chatData: [...chatData, newMessage],
+      chatData: updatedChatData,
       inputValue: "",
     });
+    wx.setStorageSync("chatData", updatedChatData);
 
     // 处理机器人的回复
     this.handleReply(inputValue);
   },
   handleReply: function (userMessage) {
     const { chatData } = this.data;
-
+  
     request({
-      url: "/chat/send", // 根据您的API定义相应的请求URL
+      url: "/", // 更新请求URL
       method: "POST",
-      data: { message: userMessage },
+      data: {
+        user: {
+          id: "001",
+        },
+        openai: {
+          model: "gpt-3.5-turbo",
+          messages: [{ role: "user", content: userMessage }],
+          temperature: 0.7,
+        },
+      },
     })
       .then((response) => {
         console.log("接收到的回复: ", response);
-
+  
         const robotReply = {
           id: chatData.length + 1,
           type: "robot",
-          //message: response.data.message, // 根据实际API响应更新此处
+          message: response.choices[0].message.content, // 直接使用响应数据作为回复内容
           timestamp: new Date(),
         };
-
+  
+        const updatedChatData = [...chatData, robotReply];
         this.setData({
-          chatData: [...chatData, robotReply],
+          chatData: updatedChatData,
         });
+        wx.setStorageSync("chatData", updatedChatData);
       })
       .catch((err) => {
         console.error("发送消息失败: ", err);
         // 在此处处理失败的逻辑，如显示错误提示等
       });
   },
+
   onShow: function () {
     const menuItemContent = wx.getStorageSync('menu_item_content');
     if (menuItemContent) {
@@ -94,6 +100,4 @@ Page({
       wx.removeStorageSync('menu_item_content');
     }
   },
-  
-  
 });

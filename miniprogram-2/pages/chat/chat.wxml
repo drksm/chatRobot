@@ -3,10 +3,10 @@
     <view class="message" wx:for="{{chatData}}" wx:key="id">
       <view class="user-info" wx:if="{{item.type === 'user'}}">
         <text class="message-text">{{item.message}}</text>
-        <image class="user-avatar" src="/assets/images/user-avatar.png" />
+        <image class="user-avatar" src="" />
       </view>
       <view class="robot-info" wx:if="{{item.type === 'robot'}}">
-        <image class="robot-avatar" src="/assets/images/robot-avatar.png" />
+        <image class="robot-avatar" src="" />
         <text class="message-text">{{item.message}}</text>
       </view>
     </view>
