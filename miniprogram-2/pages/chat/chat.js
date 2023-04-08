@@ -83,4 +83,17 @@ Page({
         // 在此处处理失败的逻辑，如显示错误提示等
       });
   },
+  onShow: function () {
+    const menuItemContent = wx.getStorageSync('menu_item_content');
+    if (menuItemContent) {
+      // 将缓存的值设置为输入框的值
+      this.setData({ inputValue: menuItemContent });
+      // 以用户的身份发送输入框的内容
+      this.onSend(menuItemContent);
+      // 清除存储值，以便下次不会重复发送
+      wx.removeStorageSync('menu_item_content');
+    }
+  },
+  
+  
 });

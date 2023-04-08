@@ -1,17 +1,36 @@
+const menuData = [
+  {
+    title: '水果',
+    items: [
+      { name: '苹果', content: '苹果' },
+      { name: '桃子', content: '桃子' },
+      { name: '葡萄', content: '葡萄' },
+    ],
+  },
+  {
+    title: '蔬菜',
+    items: [
+      { name: '白菜', content: '白菜' },
+      { name: '胡萝卜', content: '胡萝卜' },
+    ],
+  },
+];
+
 Page({
   data: {
-    // 在此处添加页面数据
+    menuData: menuData,
+    showSubMenu: {
+      '水果': false,
+      '蔬菜': false,
+    },
   },
-  onLoad: function (options) {
-    // 页面创建时执行
+
+  onMenuItemTap: function (event) {
+    const menuItemContent = event.currentTarget.dataset.content;
+    wx.setStorageSync('menu_item_content', menuItemContent);
+    wx.switchTab({
+      url: '/pages/chat/chat',
+    });
   },
-  onReady: function () {
-    // 页面显示/切入前台时执行
-  },
-  onHide: function () {
-    // 页面隐藏/切入后台时执行
-  },
-  onUnload: function () {
-    // 页面销毁时执行
-  },
+  
 });
