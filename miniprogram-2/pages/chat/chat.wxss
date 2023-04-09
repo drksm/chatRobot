@@ -54,10 +54,12 @@
 .cursor {
   position: absolute;
   background-color: #000;
-  width: 10px;
+  width: 12px;
   height: 1em;
   animation: blink 1s infinite;
+  transform: translateY(11px); /* 添加这一行 */
 }
+
 
 @keyframes blink {
   50% {

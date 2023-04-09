@@ -8,7 +8,7 @@
       <view class="robot-info" wx:if="{{item.type === 'robot'}}">
         <image class="robot-avatar" src="https://th.bing.com/th/id/OIP.z1cfZpjDF5UbPSvYRYW-rQAAAA?pid=ImgDet&rs=1" />
         <text class="message-text">{{item.message}}{{item.showCursor ? ' ' : ''}}</text>
-        <text class="cursor" wx:if="{{item.showCursor}}"></text>
+        <text class="cursor" wx:if="{{item.showCursor}}" style="left: {{item.message.length > 0 ? 'auto' : '60px'}}"></text>
       </view>
     </view>
   </scroll-view>

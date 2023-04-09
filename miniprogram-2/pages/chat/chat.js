@@ -143,32 +143,34 @@ Page({
       });
   },
 
-  typeMessage: function (message) {
-    const messageWithCursor = message.split("");
-    this.setData({ messageWithCursor: "" });
-  
-    const typeChar = () => {
-      if (messageWithCursor.length === 0) {
-        this.setData({
-          Replying: false,
-          sendButtonText: "发送",
-        });
-  
-        // 保存聊天数据到本地缓存
-        wx.setStorageSync("chat_data", this.data.chatData);
-        return;
-      }
-  
-      const char = messageWithCursor.shift();
+// 修改typeMessage方法
+typeMessage: function (message) {
+  const messageWithCursor = message.split("");
+  this.setData({ messageWithCursor: "" });
+
+  const typeChar = () => {
+    if (messageWithCursor.length === 0) {
       this.setData({
-        messageWithCursor: this.data.messageWithCursor + char,
+        Replying: false,
+        sendButtonText: "发送",
       });
-  
-      setTimeout(typeChar, 100);
-    };
-  
-    typeChar();
-  },
+
+      // 保存聊天数据到本地缓存
+      wx.setStorageSync("chat_data", this.data.chatData);
+      return;
+    }
+
+    const char = messageWithCursor.shift();
+    this.setData({
+      messageWithCursor: this.data.messageWithCursor + char,
+    });
+
+    setTimeout(typeChar, 100);
+  };
+
+  typeChar();
+},
+
   onShow: function () {
     const menuItemContent = wx.getStorageSync("menu_item_content");
     if (menuItemContent) {
