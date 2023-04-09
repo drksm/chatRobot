@@ -1,6 +1,6 @@
 .container {
   padding-top: 0;
-  padding-bottom: 58px;
+  padding-bottom: 50px;
   display: flex;
   flex-direction: column;
   height: 100vh;
@@ -36,6 +36,7 @@
   border-radius: 8px;
   margin: 2px 8px;
   word-wrap: break-word;
+  position: relative;
 }
 
 .user-info .message-text {
@@ -48,6 +49,20 @@
   background-color: #ffffff;
   color: #000000;
   margin-right: auto;
+}
+
+.cursor {
+  position: absolute;
+  background-color: #000;
+  width: 10px;
+  height: 1em;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
 }
 
 .user-avatar,
@@ -66,19 +81,16 @@
 }
 
 .input-container {
-  margin-left: 15px;
-  margin-left: 15px;
   display: flex;
   align-items: center;
   padding: 10px;
   background-color: #ffffff;
   position: fixed;
   bottom: -5px;
-  width:98%;
+  width: 100%;
 }
 
 .input {
-  margin-right: 5%;
   flex: 1;
   height: 40px;
   padding: 0 10px;
@@ -89,32 +101,11 @@
 .send-button {
   align-items: center;
   justify-content: center;
+  height: 10px;
   border-radius: 20px;
   background-color: #07c160;
   color: #ffffff;
   line-height: 35px;
-  margin-right: 50px;
   text-align: center;
   padding-bottom: 40px;
-  width:2%
-}
-
-.feedback-button-container {
-  position: fixed;
-  width: 10px;
-  height: 30px;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-.feedback-button {
-  display: block;
-  height: 20px;
-  line-height: 30px;
-  margin-left: 5px;
-  text-align: center;
-  background-color: #1e88e5; /* 更改为蓝色 */
-  color: #ffffff;
-  font-size: 20px;
 }

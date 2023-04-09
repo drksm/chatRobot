@@ -7,7 +7,8 @@
       </view>
       <view class="robot-info" wx:if="{{item.type === 'robot'}}">
         <image class="robot-avatar" src="https://th.bing.com/th/id/OIP.z1cfZpjDF5UbPSvYRYW-rQAAAA?pid=ImgDet&rs=1" />
-        <text class="message-text">{{item.message}}</text>
+        <text class="message-text">{{item.message}}{{item.showCursor ? ' ' : ''}}</text>
+        <text class="cursor" wx:if="{{item.showCursor}}"></text>
       </view>
     </view>
   </scroll-view>
@@ -23,7 +24,7 @@
     <button
       class="send-button"
       bindtap="onSend"
-      style="width: 196rpx; height: 54rpx; display: block; box-sizing: border-box; left: -16rpx; top: 0rpx; position: relative"
+      style="width: 220rpx; height: 80rpx; display: block; box-sizing: border-box; left: 0rpx; top: 0rpx"
       disabled="{{isRobotReplying}}"
     >
       {{sendButtonText || "发送"}}
