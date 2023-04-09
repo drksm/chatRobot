@@ -12,20 +12,6 @@ Page({
   },
   onLoad: function () {
     this.fetchChatData(); // 页面加载时获取聊天数据
-    this.getUserInfo(); // 获取用户信息
-  },
-  getUserInfo: function () {
-    wx.getUserInfo({
-      success: (res) => {
-        console.log(res.userInfo.avatarUrl)
-        this.setData({
-          userAvatar: res.userInfo.avatarUrl, // 将头像URL存储在页面的data对象中
-        });
-      },
-      fail: (err) => {
-        console.error("获取用户信息失败: ", err);
-      },
-    });
   },
 
   fetchChatData: function () {
@@ -59,6 +45,7 @@ Page({
     this.setData({
       chatData: [...chatData, newMessage],
       inputValue: "",
+      sendButtonText: "生成中",
     });
 
     // 保存聊天数据到本地缓存
@@ -91,27 +78,17 @@ Page({
       .then((response) => {
         console.log("接收到的回复: ", response);
 
-        const messageLength = response.length;
-        let minHeight = 100;
-        if (messageLength <= 50) {
-          minHeight = 100;
-        } else if (messageLength <= 100) {
-          minHeight = 150;
-        } else {
-          minHeight = 200;
-        }
-
         const robotReply = {
           id: chatData.length + 1,
           type: "robot",
           message: response.choices[0].message.content, // 直接使用响应数据作为回复内容
           timestamp: new Date(),
-          height: minHeight,
         };
 
         this.setData({
           chatData: [...chatData, robotReply],
           isRobotReplying: false,
+          sendButtonText: "发送",
         });
 
         // 保存聊天数据到本地缓存
@@ -122,6 +99,7 @@ Page({
         // 在此处处理失败的逻辑，如显示错误提示等
         this.setData({
           isRobotReplying: false,
+          sendButtonText: "发送",
         });
       });
   },

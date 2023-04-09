@@ -20,9 +20,13 @@
       confirm-type="send"
       bindconfirm="onSend"
     />
-    <button class="send-button" bindtap="onSend" style="width: 220rpx; height: 80rpx; display: block; box-sizing: border-box; left: 0rpx; top: 0rpx">发送</button>
-  </view>
-  <view class="feedback-button-container">
-    <button bindtap="onFeedback" class="feedback-button">反馈</button>
+    <button
+      class="send-button"
+      bindtap="onSend"
+      style="width: 220rpx; height: 80rpx; display: block; box-sizing: border-box; left: 0rpx; top: 0rpx"
+      disabled="{{isRobotReplying}}"
+    >
+      {{sendButtonText || "发送"}}
+    </button>
   </view>
 </view>
