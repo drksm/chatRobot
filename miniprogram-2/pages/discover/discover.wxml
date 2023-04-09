@@ -1,11 +1,12 @@
 <view class="container">
-  <view class="menu">
-    <view class="menu-group" wx:for="{{menuData}}" wx:key="title" >
-      <text class="menu-title">{{item.title}}</text>
-      <view class="menu-item" wx:for="{{item.items}}" wx:key="name" bindtap="onMenuItemTap" data-content="{{item.name}}">
-        <text>{{item.name}}</text>
+  <view class="category-list">
+    <view class="category-item" wx:for="{{categories}}" wx:key="id" bindtap="onCategoryTap" data-id="{{item.id}}">
+      <text class="category-text">{{item.name}}</text>
+      <view class="question-list" wx:if="{{selectedCategoryId === item.id}}">
+        <view class="question-item" wx:for="{{questions}}" wx:key="id">
+          <text class="question-text">{{item.title}}</text>
+        </view>
       </view>
     </view>
   </view>
-  <tab-bar />
 </view>
