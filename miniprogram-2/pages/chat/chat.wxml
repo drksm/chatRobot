@@ -3,10 +3,10 @@
     <view class="message" wx:for="{{chatData}}" wx:key="id">
       <view class="user-info" wx:if="{{item.type === 'user'}}">
         <text class="message-text">{{item.message}}</text>
-        <image class="user-avatar" src="" />
+        <image class="user-avatar" src="{{userAvatar}}" />
       </view>
       <view class="robot-info" wx:if="{{item.type === 'robot'}}">
-        <image class="robot-avatar" src="" />
+        <image class="robot-avatar" src="https://th.bing.com/th/id/OIP.z1cfZpjDF5UbPSvYRYW-rQAAAA?pid=ImgDet&rs=1" />
         <text class="message-text">{{item.message}}</text>
       </view>
     </view>
@@ -20,8 +20,9 @@
       confirm-type="send"
       bindconfirm="onSend"
     />
-    <button class="send-button" bindtap="onSend">发送</button>
+    <button class="send-button" bindtap="onSend" style="width: 220rpx; height: 80rpx; display: block; box-sizing: border-box; left: 0rpx; top: 0rpx">发送</button>
   </view>
-
- 
+  <view class="feedback-button-container">
+    <button bindtap="onFeedback" class="feedback-button">反馈</button>
+  </view>
 </view>

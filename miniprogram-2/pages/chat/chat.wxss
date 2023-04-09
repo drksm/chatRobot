@@ -1,4 +1,6 @@
 .container {
+  padding-top: 0;
+  padding-bottom: 50px;
   display: flex;
   flex-direction: column;
   height: 100vh;
@@ -69,7 +71,7 @@
   padding: 10px;
   background-color: #ffffff;
   position: fixed;
-  bottom: 50px;
+  bottom: -5px;
   width: 100%;
 }
 
@@ -82,12 +84,33 @@
 }
 
 .send-button {
-  width: 60px;
-  height: 40px;
-  margin-left: 10px;
+  align-items: center;
+  justify-content: center;
+  height: 10px;
   border-radius: 20px;
   background-color: #07c160;
   color: #ffffff;
-  line-height: 40px;
+  line-height: 35px;
   text-align: center;
+  padding-bottom: 40px;
+}
+
+.feedback-button-container {
+  position: fixed;
+  width: 10px;
+  height: 30px;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.feedback-button {
+  display: block;
+  height: 20px;
+  line-height: 30px;
+  margin-left: 5px;
+  text-align: center;
+  background-color: #1e88e5; /* 更改为蓝色 */
+  color: #ffffff;
+  font-size: 20px;
 }
