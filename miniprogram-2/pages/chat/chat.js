@@ -14,7 +14,6 @@ Page({
   },
   onLoad: function () {
     this.fetchChatData(); // 页面加载时获取聊天数据
-    this.getUserInfo(); // 获取用户信息
   },
   getUserInfo: function () {
     wx.getUserInfo({
@@ -93,6 +92,8 @@ Page({
       data: {
         user: {
           id: "001",
+          token: getApp().globalData.access_token,
+          openid: getApp().globalData.openid,
         },
         openai: {
           model: "gpt-3.5-turbo",
