@@ -74,10 +74,11 @@
   background-color: #ffffff;
   position: fixed;
   bottom: -5px;
-  width: 400px;
+  width:98%;
 }
 
 .input {
+  margin-right: 5%;
   flex: 1;
   height: 40px;
   padding: 0 10px;
@@ -88,15 +89,14 @@
 .send-button {
   align-items: center;
   justify-content: center;
-  height: 10px;
   border-radius: 20px;
   background-color: #07c160;
   color: #ffffff;
   line-height: 35px;
-  margin-left: 5px;
-  margin-right: 5px;
+  margin-right: 50px;
   text-align: center;
   padding-bottom: 40px;
+  width:2%
 }
 
 .feedback-button-container {

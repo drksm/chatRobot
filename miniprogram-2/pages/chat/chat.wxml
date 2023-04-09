@@ -23,7 +23,7 @@
     <button
       class="send-button"
       bindtap="onSend"
-      style="width: 220rpx; height: 80rpx; display: block; box-sizing: border-box; left: 0rpx; top: 0rpx"
+      style="width: 196rpx; height: 54rpx; display: block; box-sizing: border-box; left: -16rpx; top: 0rpx; position: relative"
       disabled="{{isRobotReplying}}"
     >
       {{sendButtonText || "发送"}}
