@@ -1,6 +1,10 @@
 const baseURL = "https://aigkzy.com:9000"; // 替换为您的API域名
 
 function request(options) {
+  wx.reportEvent("chat_send_times", {
+  })
+  let startTime = Date.parse(new Date());  
+  console.error(startTime)
   return new Promise((resolve, reject) => {
     wx.request({
       url: baseURL + options.url,
@@ -12,6 +16,12 @@ function request(options) {
       },
       success: (res) => {
         if (res.statusCode >= 200 && res.statusCode < 300) {
+          wx.reportEvent("chat_send_success_times", {
+          })
+          wx.reportEvent("chat_send_duration_time", {
+            "duration_time": Date.parse(new Date()) - startTime
+          })
+          console.error(Date.parse(new Date()) - startTime)
           resolve(res.data);
         } else {
           // 可以在这里处理一些通用的错误逻辑
