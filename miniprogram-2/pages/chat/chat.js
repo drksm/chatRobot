@@ -86,6 +86,24 @@ Page({
       isRobotReplying: true,
     });
   
+    let timeoutId = null;
+  
+    timeoutId = setTimeout(() => {
+      const failedReply = {
+        id: chatData.length,
+        type: "robot",
+        message: "生成失败，请重新输入",
+        timestamp: new Date(),
+        showCursor: false,
+      };
+  
+      chatData[chatData.length - 1] = failedReply;
+      this.setData({
+        chatData: chatData,
+        isRobotReplying: false,
+      });
+    }, 30000);
+  
     request({
       url: "/", // 更新请求URL
       method: "POST",
@@ -104,6 +122,7 @@ Page({
     })
       .then((response) => {
         console.log("接收到的回复: ", response);
+        clearTimeout(timeoutId);
   
         const messageLength = response.length;
         let minHeight = 100;
@@ -136,13 +155,16 @@ Page({
       })
       .catch((err) => {
         console.error("发送消息失败: ", err);
+        clearTimeout(timeoutId);
+  
         // 在此处处理失败的逻辑，如显示错误提示等
         this.setData({
           isRobotReplying: false,
         });
       });
   },
-
+  
+  
 // 修改typeMessage方法
 typeMessage: function (message) {
   const messageWithCursor = message.split("");

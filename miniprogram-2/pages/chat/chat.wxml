@@ -3,7 +3,7 @@
     <view class="message" wx:for="{{chatData}}" wx:key="id">
       <view class="user-info" wx:if="{{item.type === 'user'}}">
         <text class="message-text">{{item.message}}</text>
-        <image class="user-avatar" src="{{userAvatar}}" />
+        <image class="user-avatar" src="https://pic1.zhimg.com/50/v2-6afa72220d29f045c15217aa6b275808_hd.jpg?source=1940ef5c" />
       </view>
       <view class="robot-info" wx:if="{{item.type === 'robot'}}">
         <image class="robot-avatar" src="https://th.bing.com/th/id/OIP.z1cfZpjDF5UbPSvYRYW-rQAAAA?pid=ImgDet&rs=1" />
