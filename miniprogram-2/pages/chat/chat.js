@@ -40,7 +40,9 @@ Page({
   },
   onSend: function () {
     const { inputValue, chatData } = this.data;
-  
+    if (this.isRobotReplying) {
+      return;
+    }
     if (!inputValue.trim()) {
       wx.showToast({
         title: "请输入内容",
@@ -86,22 +88,26 @@ Page({
       isRobotReplying: true,
     });
   
-    let timeoutId = null;
+    // 设置一个超时标记
+    let isTimeout = false;
   
-    timeoutId = setTimeout(() => {
-      const failedReply = {
+    // 设置一个30秒的计时器
+    const timer = setTimeout(() => {
+      isTimeout = true; // 标记请求已超时
+      this.setData({
+        isRobotReplying: false,
+      });
+  
+      // 更新最后一条空的机器人回复为错误信息
+      const errorReply = {
         id: chatData.length,
         type: "robot",
         message: "生成失败，请重新输入",
         timestamp: new Date(),
         showCursor: false,
       };
-  
-      chatData[chatData.length - 1] = failedReply;
-      this.setData({
-        chatData: chatData,
-        isRobotReplying: false,
-      });
+      chatData[chatData.length - 1] = errorReply;
+      this.setData({ chatData: chatData });
     }, 30000);
   
     request({
@@ -121,8 +127,15 @@ Page({
       },
     })
       .then((response) => {
+        // 清除计时器
+        clearTimeout(timer);
+  
+        // 如果请求已超时，不处理回复
+        if (isTimeout) {
+          return;
+        }
+  
         console.log("接收到的回复: ", response);
-        clearTimeout(timeoutId);
   
         const messageLength = response.length;
         let minHeight = 100;
@@ -154,9 +167,15 @@ Page({
         this.typeMessage(robotReply.message);
       })
       .catch((err) => {
-        console.error("发送消息失败: ", err);
-        clearTimeout(timeoutId);
+        // 清除计时器
+        clearTimeout(timer);
   
+        // 如果请求已超时，不处理错误
+        if (isTimeout) {
+          return;
+        }
+  
+        console.error("发送消息失败: ", err);
         // 在此处处理失败的逻辑，如显示错误提示等
         this.setData({
           isRobotReplying: false,
