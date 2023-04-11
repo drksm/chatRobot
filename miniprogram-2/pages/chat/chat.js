@@ -11,10 +11,11 @@ Page({
     userAvatar: "",
     sendButtonText: "发送",
     messageWithCursor: "",
-    chatListHeight: 720, // 添加此行
+    chatListHeight: 0, 
   },
   
   onLoad: function () {
+    console.log(this.data.chatListHeight)
     this.fetchChatData(); // 页面加载时获取聊天数据
     this.initChatListHeight(); 
     this.updateChatListHeight(); // 在页面加载时更新 chatListHeight
@@ -40,7 +41,9 @@ Page({
       const inputContainerHeight = res[0].height;
       const windowHeight = wx.getSystemInfoSync().windowHeight;
       const chatListHeight = windowHeight - inputContainerHeight;
-      this.setData({ chatListHeight });
+      this.setData({ 
+        chatListHeight:chatListHeight
+       });
     });
   },
   getUserInfo: function () {
@@ -81,6 +84,7 @@ Page({
     query.exec((res) => {
       const inputContainerHeight = res[0].height;
       const chatListHeight = wx.getSystemInfoSync().windowHeight - inputContainerHeight;
+      console.log('updateChatListHeight chatListHeight'+chatListHeight)
       this.setData({
         chatListHeight: chatListHeight,
       });

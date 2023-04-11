@@ -1,5 +1,5 @@
 <view class="container">
-  <scroll-view class="chat-list" scroll-y style="position: relative; left: 0rpx; top: -16rpx;height:{{chatListHeight}}px;">
+  <scroll-view class="chat-list" scroll-y style="position: relative; left: 0rpx; top: 10rpx; height:{{chatListHeight}}rpx" auto-height>
     <view class="message" wx:for="{{chatData}}" wx:key="id">
       <view class="user-info" wx:if="{{item.type === 'user'}}">
         <text class="message-text">{{item.message}}</text>
@@ -13,7 +13,7 @@
     </view>
   </scroll-view>
   <view class="input-container">
-    <textarea style="position: relative; left: 21rpx; top: 0rpx"
+    <textarea style="position: relative; left: 21rpx; top: 0rpx;"
       class="input"
       placeholder="请输入..."
       value="{{inputValue}}"

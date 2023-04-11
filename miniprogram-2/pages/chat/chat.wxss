@@ -8,9 +8,9 @@
 }
 
 .chat-list {
+  height: 1000px;
   flex: 1;
   overflow-y: scroll;
-  margin-top: -10px;
   padding: 10px;
   box-sizing: border-box;
   position: relative;
@@ -89,11 +89,13 @@
   position: fixed;
   bottom: -5px;
   width: 100%;
+  z-index: 10;
 }
 
 .input {
+  z-index: -1;
   margin-left: 10px;
-  margin-right: 10px;
+  margin-right: 20px;
   padding-left: 10px;
   flex: 1;
   height: 40px;
