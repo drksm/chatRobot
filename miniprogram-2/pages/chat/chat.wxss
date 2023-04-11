@@ -57,9 +57,8 @@
   width: 8px;
   height: 1em;
   animation: blink 1s infinite;
-  transform: translateY(11px); /* 添加这一行 */
+  transform: translateY(11px);
 }
-
 
 @keyframes blink {
   50% {

@@ -1,5 +1,5 @@
 <view class="container">
-  <scroll-view class="chat-list" scroll-y>
+  <scroll-view class="chat-list" scroll-y style="position: relative; left: 0rpx; top: -16rpx;height:{{chatListHeight}}px;">
     <view class="message" wx:for="{{chatData}}" wx:key="id">
       <view class="user-info" wx:if="{{item.type === 'user'}}">
         <text class="message-text">{{item.message}}</text>
@@ -7,19 +7,22 @@
       </view>
       <view class="robot-info" wx:if="{{item.type === 'robot'}}">
         <image class="robot-avatar" src="https://th.bing.com/th/id/OIP.z1cfZpjDF5UbPSvYRYW-rQAAAA?pid=ImgDet&rs=1" />
-        <text class="message-text">{{item.message}}{{item.showCursor ? ' ' : ''}}</text>
-        <text class="cursor" wx:if="{{item.showCursor}}" style="left: {{item.message.length > 0 ? 'auto' : '60px'}}"></text>
+        <text class="message-text" user-select='all'>{{item.message}}{{item.showCursor ? ' ' : ''}}</text>
+        <text class="cursor"  wx:if="{{item.showCursor}}" style="left: {{item.message.length > 0 ? 'auto' : '60px'}}"></text>
       </view>
     </view>
   </scroll-view>
   <view class="input-container">
-    <input
+    <textarea style="position: relative; left: 21rpx; top: 0rpx"
       class="input"
-      placeholder="请输入内容"
+      placeholder="请输入..."
       value="{{inputValue}}"
       bindinput="onInput"
-      confirm-type="send"
+      bindlinechange="bindlinechange"
+      auto-height
+      maxlength="500"
     />
+
     <button
       class="send-button"
       bindtap="onSend"

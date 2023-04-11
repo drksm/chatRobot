@@ -11,13 +11,17 @@ Page({
     userAvatar: "",
     sendButtonText: "发送",
     messageWithCursor: "",
+    chatListHeight: 720, // 添加此行
   },
+  
   onLoad: function () {
     this.fetchChatData(); // 页面加载时获取聊天数据
+    this.initChatListHeight(); 
+    this.updateChatListHeight(); // 在页面加载时更新 chatListHeight
     const welcomeMessage = {
       id: 0,
       type: "robot",
-      message: "您好，欢迎使用袋鼠AI，请输入您的指令，一般的判断大概需要30s，生成指令需要60s，由于延迟问题，部分内容可能生成失败",
+      message: "您好，欢迎使用袋鼠AI，请输入您的指令，由于延迟问题，部分内容可能生成失败",
       timestamp: new Date(),
       showCursor: false,
     };
@@ -28,6 +32,16 @@ Page({
       chatData: chatData,
     });
     
+  },
+  initChatListHeight: function () {
+    const query = wx.createSelectorQuery();
+    query.select(".input-container").boundingClientRect();
+    query.exec((res) => {
+      const inputContainerHeight = res[0].height;
+      const windowHeight = wx.getSystemInfoSync().windowHeight;
+      const chatListHeight = windowHeight - inputContainerHeight;
+      this.setData({ chatListHeight });
+    });
   },
   getUserInfo: function () {
     wx.getUserInfo({
@@ -41,7 +55,6 @@ Page({
       },
     });
   },
-
   fetchChatData: function () {
     // 从本地缓存获取聊天数据
     const chatData = wx.getStorageSync("chat_data") || [];
@@ -51,7 +64,44 @@ Page({
     this.setData({
       inputValue: e.detail.value,
     });
+  
+    const textarea = e.detail.value.split("\n").length; // 计算换行符数量
+    const lineHeight = 20; // 设置行高（根据wxss中的line-height值）
+    const minHeight = 40; // 设置最小高度
+    const maxHeight = 120; // 设置最大高度
+  
+    const inputHeight = Math.min(maxHeight, Math.max(minHeight, lineHeight * textarea));
+    this.setData({
+      inputHeight: inputHeight,
+    });
   },
+  updateChatListHeight: function () {
+    const query = wx.createSelectorQuery();
+    query.select(".input-container").boundingClientRect();
+    query.exec((res) => {
+      const inputContainerHeight = res[0].height;
+      const chatListHeight = wx.getSystemInfoSync().windowHeight - inputContainerHeight;
+      this.setData({
+        chatListHeight: chatListHeight,
+      });
+    });
+  },
+  bindlinechange: function (e) {
+    const { height } = e.detail;
+    this.setData({
+      inputHeight: height,
+    });
+    this.updateChatListHeight(); // 在输入框高度发生变化时更新 chatListHeight
+  },
+  adjustInputHeight: function (e) {
+    const { lineHeight = 1.2, paddingBottom = 10, paddingTop = 10 } = this.data;
+    const height = (e.detail.lineCount * lineHeight + paddingTop + paddingBottom) * 10;
+  
+    this.setData({
+      inputHeight: height
+    });
+  },
+  
   onSend: function () {
     const { inputValue, chatData } = this.data;
     if (this.isRobotReplying) {
