@@ -14,6 +14,20 @@ Page({
   },
   onLoad: function () {
     this.fetchChatData(); // 页面加载时获取聊天数据
+    const welcomeMessage = {
+      id: 0,
+      type: "robot",
+      message: "您好，欢迎使用袋鼠AI，请输入您的指令，一般的判断大概需要30s，生成指令需要60s，由于延迟问题，部分内容可能生成失败",
+      timestamp: new Date(),
+      showCursor: false,
+    };
+  
+    const { chatData } = this.data;
+    chatData.push(welcomeMessage);
+    this.setData({
+      chatData: chatData,
+    });
+    
   },
   getUserInfo: function () {
     wx.getUserInfo({
@@ -108,7 +122,7 @@ Page({
       };
       chatData[chatData.length - 1] = errorReply;
       this.setData({ chatData: chatData });
-    }, 30000);
+    }, 60000);
   
     request({
       url: "/", // 更新请求URL
