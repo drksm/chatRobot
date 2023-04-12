@@ -13,6 +13,8 @@ Page({
     messageWithCursor: "",
     chatListHeight: 0, 
     chatListPaddingBottom: 0,
+    animationDuration: 300, // 设置动画持续时间（毫秒）
+    scrollAnimationDuration: 1000,
   },
   
   onLoad: function () {
@@ -142,6 +144,7 @@ Page({
   
     // 处理机器人的回复
     this.handleReply(inputValue);
+    this.scrollToBottom(this.data.animationDuration);
   },
   handleReply: function (userMessage) {
     const { chatData } = this.data;
@@ -285,4 +288,20 @@ typeMessage: function (message) {
     wx.removeStorageSync("menu_item_content");
     }
   },
+
+  scrollToBottom: function (duration) {
+    setTimeout(() => {
+      const query = wx.createSelectorQuery();
+      query.select(".chat-list").boundingClientRect();
+      query.exec((res) => {
+        const chatListHeight = res[0].height;
+        this.setData({ scrollTop: chatListHeight });
+      });
+    }, 100);
+  },
+  
+  onInputFocus: function () {
+    this.scrollToBottom(this.data.animationDuration);
+  },
+  
 });

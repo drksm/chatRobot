@@ -2,7 +2,9 @@
 <template is="custom-tab-bar" data="{{...$root['0'], selected: $root.selected}}" />
 
 <view class="container">
-  <scroll-view class="chat-list" scroll-y style="height: calc(100% - {{chatListHeight}}px); padding-bottom: calc({{chatListPaddingBottom}}px + 10px);" >
+  <view>
+  </view>
+  <view class="chat-list" scroll-y style="height: calc(100% - {{chatListHeight}}px); padding-bottom: calc({{chatListPaddingBottom}}px + 10px);"id="chatScrollView" scroll-top="{{scrollTop}}">
     <view class="message" wx:for="{{chatData}}" wx:key="id">
       <view class="user-info" wx:if="{{item.type === 'user'}}">
         <text class="message-text">{{item.message}}</text>
@@ -14,13 +16,13 @@
         <text class="cursor"  wx:if="{{item.showCursor}}" style="left: {{item.message.length > 0 ? 'auto' : '60px'}}"></text>
       </view>
     </view>
-  </scroll-view>
+  </view>
   <view class="input-container">
-    <textarea style="width: 471rpx; display: block; box-sizing: border-box; height: 84rpx; left: -2rpx; top: 0rpx; font-size: 30px; position: relative ;padding:10px"
+    <textarea style=" box-sizing: border-box;  top: 0rpx; font-size: 20px; padding: 0px 20px;"
       class="input"
-      placeholder=""
       value="{{inputValue}}"
       bindinput="onInput"
+      bindfocus="onInputFocus"
       auto-height
       maxlength="500"
     />
@@ -28,7 +30,7 @@
     <button
       class="send-button"
       bindtap="onSend"
-      style="width: 220rpx; height: 57rpx; display: block; box-sizing: border-box; left: 0rpx; top: 0rpx"
+      style="width: 220rpx; height: 57rpx; display: block; box-sizing: border-box; left: 0rpx; top: 0rpx; font-size: 15px;"
       disabled="{{isRobotReplying}}"
     >
       {{sendButtonText || "发送"}}
