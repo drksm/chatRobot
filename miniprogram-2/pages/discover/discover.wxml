@@ -3,7 +3,7 @@
     <view class="category-item" wx:for="{{categories}}" wx:key="id" bindtap="onCategoryTap" data-id="{{item.id}}">
       <text class="category-text">{{item.name}}</text>
       <view class="question-list" wx:if="{{selectedCategoryId === item.id}}">
-        <view class="question-item" wx:for="{{questions}}" wx:key="id">
+        <view class="question-item" wx:for="{{questions}}" wx:key="id" bindtap="onItemTap" data-id="{{item.title}}">
           <text class="question-text">{{item.title}}</text>
         </view>
       </view>

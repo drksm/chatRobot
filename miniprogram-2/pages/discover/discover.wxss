@@ -1,20 +1,25 @@
 .container {
   height: 100%;
+  margin-top: 0%;
+  padding: 0%;
+  background-color: #ffffff;
 }
 
 .category-list {
   width: 100%;
+  border-bottom: 1px solid #e5e5e5;
   background-color: #f2f2f2;
   overflow: scroll;
 }
 
 .category-item {
   padding: 10px;
-  border-bottom: 1px solid #e5e5e5;
+  border-bottom: 1px solid #f2f2f2;
+  background-color: #ffffff;
 }
 
 .category-text {
-  font-size: 14px;
+  font-size: 18px;
 }
 
 .question-list {
