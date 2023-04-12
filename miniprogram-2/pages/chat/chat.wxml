@@ -13,9 +13,9 @@
     </view>
   </scroll-view>
   <view class="input-container">
-    <textarea style="width: 471rpx; display: block; box-sizing: border-box; height: 84rpx; left: -2rpx; top: 0rpx; font-size: 30px; position: relative"
+    <textarea style="width: 471rpx; display: block; box-sizing: border-box; height: 84rpx; left: -2rpx; top: 0rpx; font-size: 30px; position: relative ;padding:10px"
       class="input"
-      placeholder="请输入..."
+      placeholder=""
       value="{{inputValue}}"
       bindinput="onInput"
       auto-height
