@@ -12,12 +12,12 @@ Page({
     sendButtonText: "发送",
     messageWithCursor: "",
     chatListHeight: 0, 
+    chatListPaddingBottom: 0,
   },
   
   onLoad: function () {
     console.log(this.data.chatListHeight)
     this.fetchChatData(); // 页面加载时获取聊天数据
-    this.initChatListHeight(); 
     this.updateChatListHeight(); // 在页面加载时更新 chatListHeight
     const welcomeMessage = {
       id: 0,
@@ -33,18 +33,6 @@ Page({
       chatData: chatData,
     });
     
-  },
-  initChatListHeight: function () {
-    const query = wx.createSelectorQuery();
-    query.select(".input-container").boundingClientRect();
-    query.exec((res) => {
-      const inputContainerHeight = res[0].height;
-      const windowHeight = wx.getSystemInfoSync().windowHeight;
-      const chatListHeight = windowHeight - inputContainerHeight;
-      this.setData({ 
-        chatListHeight:chatListHeight
-       });
-    });
   },
   getUserInfo: function () {
     wx.getUserInfo({
@@ -77,26 +65,32 @@ Page({
     this.setData({
       inputHeight: inputHeight,
     });
+  
+    const chatListPaddingBottom = inputHeight - minHeight;
+    this.setData({
+      chatListPaddingBottom: chatListPaddingBottom,
+    });
+  
+    this.updateChatListHeight(); // 在输入框高度发生变化时更新 chatListHeight
   },
+  
   updateChatListHeight: function () {
     const query = wx.createSelectorQuery();
     query.select(".input-container").boundingClientRect();
     query.exec((res) => {
       const inputContainerHeight = res[0].height;
-      const chatListHeight = wx.getSystemInfoSync().windowHeight - inputContainerHeight;
-      console.log('updateChatListHeight chatListHeight'+chatListHeight)
+      const windowHeight = wx.getSystemInfoSync().windowHeight;
+      const chatListHeight = windowHeight - inputContainerHeight;
       this.setData({
         chatListHeight: chatListHeight,
       });
+  
+      // 输出chatList元素和输入框的高度
+      console.log("ChatList Height:", chatListHeight);
+      console.log("Input Container Height:", inputContainerHeight);
     });
   },
-  bindlinechange: function (e) {
-    const { height } = e.detail;
-    this.setData({
-      inputHeight: height,
-    });
-    this.updateChatListHeight(); // 在输入框高度发生变化时更新 chatListHeight
-  },
+  
   adjustInputHeight: function (e) {
     const { lineHeight = 1.2, paddingBottom = 10, paddingTop = 10 } = this.data;
     const height = (e.detail.lineCount * lineHeight + paddingTop + paddingBottom) * 10;

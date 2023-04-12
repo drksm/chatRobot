@@ -1,5 +1,5 @@
 <view class="container">
-  <scroll-view class="chat-list" scroll-y style="position: relative; left: 0rpx; top: 10rpx; height:{{chatListHeight}}rpx" auto-height>
+  <scroll-view class="chat-list" scroll-y style="height: calc(100% - {{chatListHeight}}px); padding-bottom: calc({{chatListPaddingBottom}}px + 10px);" >
     <view class="message" wx:for="{{chatData}}" wx:key="id">
       <view class="user-info" wx:if="{{item.type === 'user'}}">
         <text class="message-text">{{item.message}}</text>
@@ -18,7 +18,6 @@
       placeholder="请输入..."
       value="{{inputValue}}"
       bindinput="onInput"
-      bindlinechange="bindlinechange"
       auto-height
       maxlength="500"
     />
