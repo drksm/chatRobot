@@ -12,6 +12,9 @@
   "style": "v2",
   "sitemapLocation": "sitemap.json",
   "tabBar": {
+    "color": "#7A7E83",
+    "selectedColor": "#3cc51f",
+    "backgroundColor": "#ffffff",
     "list": [
       {
         "pagePath": "pages/chat/chat",

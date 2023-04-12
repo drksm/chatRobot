@@ -1,3 +1,6 @@
+<import src="/custom-tab-bar/index.wxml" />
+<template is="custom-tab-bar" data="{{...$root['0'], selected: $root.selected}}" />
+
 <view class="container">
   <scroll-view class="chat-list" scroll-y style="height: calc(100% - {{chatListHeight}}px); padding-bottom: calc({{chatListPaddingBottom}}px + 10px);" >
     <view class="message" wx:for="{{chatData}}" wx:key="id">
