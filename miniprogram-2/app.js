@@ -41,6 +41,7 @@ App({
   globalData: {
     userInfo: null,
     openid:'',
-    access_token:''
+    access_token:'',
+    isRequesting: false,
   }
 })

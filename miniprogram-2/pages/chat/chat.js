@@ -7,7 +7,6 @@ Page({
   data: {
     inputValue: "",
     chatData: [],
-    isRobotReplying: false,
     userAvatar: "",
     sendButtonText: "发送",
     messageWithCursor: "",
@@ -15,8 +14,37 @@ Page({
     chatListPaddingBottom: 0,
     animationDuration: 300, // 设置动画持续时间（毫秒）
     scrollAnimationDuration: 1000,
+    requestPromise: null,
   },
-  
+  abortRequest: function () {
+    const { requestPromise, chatData } = this.data;
+    if (requestPromise) {
+      requestPromise.abort(); // 取消请求
+      this.setData({
+        requestPromise: null,
+      });
+      // 如果最后一条消息是空的机器人回复，将其移除
+      if (chatData.length > 0 && chatData[chatData.length - 1].type === 'robot' && chatData[chatData.length - 1].message === '') {
+        chatData.pop();
+        this.setData({
+          chatData: chatData
+        });
+        // 保存聊天数据到本地缓存
+        wx.setStorageSync("chat_data", chatData);
+      }
+    }
+  },
+  removeEmptyReply: function () {
+    const { chatData } = this.data;
+    if (chatData.length > 0 && chatData[chatData.length - 1].type === 'robot' && chatData[chatData.length - 1].message === '') {
+      chatData.pop();
+      this.setData({
+        chatData: chatData
+      });
+      // 保存聊天数据到本地缓存
+      wx.setStorageSync("chat_data", chatData);
+    }
+  },
   onLoad: function () {
     this.fetchChatData(); // 页面加载时获取聊天数据
     this.updateChatListHeight(); // 在页面加载时更新 chatListHeight
@@ -27,13 +55,13 @@ Page({
       timestamp: new Date(),
       showCursor: false,
     };
-  
+    this.removeEmptyReply();
     const { chatData } = this.data;
     chatData.push(welcomeMessage);
     this.setData({
       chatData: chatData,
     });
-    
+    console.log(this.data.chatData)
   },
   getUserInfo: function () {
     wx.getUserInfo({
@@ -98,10 +126,16 @@ Page({
   },
   
   onSend: function () {
-    const { inputValue, chatData } = this.data;
-    if (this.isRobotReplying) {
+    const app = getApp();
+    if (app.globalData.isRequesting) {
+      wx.showToast({
+        title: '请等待当前问题完成',
+        icon: 'none',
+        duration: 2000
+      });
       return;
     }
+    const { inputValue, chatData } = this.data;
     if (!inputValue.trim()) {
       wx.showToast({
         title: "请输入内容",
@@ -109,7 +143,6 @@ Page({
       });
       return;
     }
-  
     // 添加用户的消息到聊天数据
     const newMessage = {
       id: chatData.length + 1,
@@ -121,7 +154,6 @@ Page({
       chatData: [...chatData, newMessage],
       inputValue: "",
     });
-  
     // 添加一个空的机器人回复
     const emptyRobotReply = {
       id: chatData.length + 2,
@@ -133,31 +165,21 @@ Page({
     this.setData({
       chatData: [...chatData, newMessage, emptyRobotReply],
     });
-  
     // 保存聊天数据到本地缓存
     wx.setStorageSync("chat_data", this.data.chatData);
-  
     // 处理机器人的回复
+
     this.handleReply(inputValue);
     this.scrollToBottom(this.data.animationDuration);
   },
   handleReply: function (userMessage) {
     const { chatData } = this.data;
-  
-    this.setData({
-      isRobotReplying: true,
-    });
-  
+    const app = getApp();
     // 设置一个超时标记
     let isTimeout = false;
-  
     // 设置一个30秒的计时器
     const timer = setTimeout(() => {
       isTimeout = true; // 标记请求已超时
-      this.setData({
-        isRobotReplying: false,
-      });
-  
       // 更新最后一条空的机器人回复为错误信息
       const errorReply = {
         id: chatData.length,
@@ -169,8 +191,8 @@ Page({
       chatData[chatData.length - 1] = errorReply;
       this.setData({ chatData: chatData });
     }, 60000);
-  
-    request({
+    app.globalData.isRequesting = true; // 请求开始前设置为 true
+    const requestPromise =request({
       url: "/", // 更新请求URL
       method: "POST",
       data: {
@@ -186,7 +208,9 @@ Page({
         },
       },
     })
-      .then((response) => {
+    .then((response) => {
+      app.globalData.isRequesting = false; // 请求完成后设置为 false
+      this.setData({ requestPromise: null }); // 清除 requestPromise
         // 清除计时器
         clearTimeout(timer);
         // 如果请求已超时，不处理回复
@@ -215,12 +239,13 @@ Page({
         chatData[chatData.length - 1] = robotReply;
         this.setData({
           chatData: chatData,
-          isRobotReplying: false,
         });
         // 调用typeMessage方法逐字显示回复内容
-        this.typeMessage(robotReply.message);
-      })
-      .catch((err) => {
+        this.typeMessage(robotReply.message, chatData.length - 1);
+    })
+    .catch((err) => {
+      app.globalData.isRequesting = false; // 请求完成后设置为 false
+      this.setData({ requestPromise: null }); // 清除 requestPromise
         // 清除计时器
         clearTimeout(timer);
         // 如果请求已超时，不处理错误
@@ -240,16 +265,28 @@ Page({
         chatData[chatData.length - 1] = robotReply;
         this.setData({
           chatData: chatData,
-          isRobotReplying: false,
         });S
         // 调用typeMessage方法逐字显示回复内容
-        this.typeMessage(robotReply.message);
-      });
+        this.typeMessage(robotReply.message, chatData.length - 1);
+    });
+    this.setData({
+      requestPromise: requestPromise,
+    });
+  },
+  onUnload: function () {
+    this.abortRequest();
+    this.setData({ requestPromise: null }); // 清除 requestPromise
+    this.removeEmptyReply();
+  },
+
+  onHide: function () {
+    this.abortRequest();
+    this.setData({ requestPromise: null }); // 清除 requestPromise
+    this.removeEmptyReply();
   },
   
-  
 // 修改typeMessage方法
-typeMessage: function (message) {
+typeMessage: function (message,robotReplyIndex) {
   const messageWithCursor = message.split("");
   this.setData({ messageWithCursor: "" });
 
@@ -266,8 +303,10 @@ typeMessage: function (message) {
     }
 
     const char = messageWithCursor.shift();
+    const updatedChatData = this.data.chatData;
+    updatedChatData[robotReplyIndex].message = this.data.chatData[robotReplyIndex].message + char;
     this.setData({
-      messageWithCursor: this.data.messageWithCursor + char,
+      chatData: updatedChatData,
     });
 
     setTimeout(typeChar, 100);

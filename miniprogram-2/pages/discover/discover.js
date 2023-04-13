@@ -29,13 +29,24 @@ Page({
   },
 
   onItemTap: function (event) {
+    const app = getApp();
+    if (app.globalData.isRequesting) {
+      return;
+    }
+  
+    app.globalData.isRequesting = true;
     const menuItemContent = event.currentTarget.dataset.id;
-    wx.setStorageSync('menu_item_content', menuItemContent);
+    wx.setStorageSync("menu_item_content", menuItemContent);
     wx.switchTab({
-      url: '/pages/chat/chat',
+      url: "/pages/chat/chat",
+      success: () => {
+        setTimeout(() => {
+          app.globalData.isRequesting = false;
+        }, 1000);
+      },
     });
   },
-
+  
   // 模拟根据问题大类ID加载详细问题数据
   loadQuestions: function (categoryId) {
     const questions = [
