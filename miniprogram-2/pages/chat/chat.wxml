@@ -2,9 +2,7 @@
 <template is="custom-tab-bar" data="{{...$root['0'], selected: $root.selected}}" />
 
 <view class="container">
-  <view>
-  </view>
-  <view class="chat-list" scroll-y style="height: calc(100% - {{chatListHeight}}px); padding-bottom: calc({{chatListPaddingBottom}}px + 10px);"id="chatScrollView" scroll-top="{{scrollTop}}">
+  <scroll-view class="chat-list" scroll-y style="height: calc(100% - {{chatListHeight}}px); padding-bottom: calc({{chatListPaddingBottom}}px + 10px);"id="chatScrollView" scroll-top="{{scrollTop}}">
     <view class="message" wx:for="{{chatData}}" wx:key="id">
       <view class="user-info" wx:if="{{item.type === 'user'}}">
         <text class="message-text">{{item.message}}</text>
@@ -16,7 +14,7 @@
         <text class="cursor"  wx:if="{{item.showCursor}}" style="left: {{item.message.length > 0 ? 'auto' : '60px'}}"></text>
       </view>
     </view>
-  </view>
+  </scroll-view>
   <view class="input-container">
     <textarea style=" box-sizing: border-box;  top: 0rpx; font-size: 20px; padding: 0px 20px;"
       class="input"

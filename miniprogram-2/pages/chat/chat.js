@@ -18,7 +18,6 @@ Page({
   },
   
   onLoad: function () {
-    console.log(this.data.chatListHeight)
     this.fetchChatData(); // 页面加载时获取聊天数据
     this.updateChatListHeight(); // 在页面加载时更新 chatListHeight
     const welcomeMessage = {
@@ -86,10 +85,6 @@ Page({
       this.setData({
         chatListHeight: chatListHeight,
       });
-  
-      // 输出chatList元素和输入框的高度
-      console.log("ChatList Height:", chatListHeight);
-      console.log("Input Container Height:", inputContainerHeight);
     });
   },
   
@@ -194,14 +189,11 @@ Page({
       .then((response) => {
         // 清除计时器
         clearTimeout(timer);
-  
         // 如果请求已超时，不处理回复
         if (isTimeout) {
           return;
         }
-  
         console.log("接收到的回复: ", response);
-  
         const messageLength = response.length;
         let minHeight = 100;
         if (messageLength <= 50) {
@@ -211,7 +203,6 @@ Page({
         } else {
           minHeight = 200;
         }
-  
         const robotReply = {
           id: chatData.length,
           type: "robot",
@@ -220,31 +211,39 @@ Page({
           height: minHeight,
           showCursor: false,
         };
-  
         // 更新最后一条空的机器人回复
         chatData[chatData.length - 1] = robotReply;
         this.setData({
           chatData: chatData,
           isRobotReplying: false,
         });
-  
         // 调用typeMessage方法逐字显示回复内容
         this.typeMessage(robotReply.message);
       })
       .catch((err) => {
         // 清除计时器
         clearTimeout(timer);
-  
         // 如果请求已超时，不处理错误
         if (isTimeout) {
           return;
         }
-  
         console.error("发送消息失败: ", err);
         // 在此处处理失败的逻辑，如显示错误提示等
+        const robotReply = {
+          id: chatData.length,
+          type: "robot",
+          message: '发送失败，请稍后重试',
+          timestamp: new Date(),
+          height: 100,
+          showCursor: false,
+        };
+        chatData[chatData.length - 1] = robotReply;
         this.setData({
+          chatData: chatData,
           isRobotReplying: false,
-        });
+        });S
+        // 调用typeMessage方法逐字显示回复内容
+        this.typeMessage(robotReply.message);
       });
   },
   
@@ -301,7 +300,7 @@ typeMessage: function (message) {
   },
   
   onInputFocus: function () {
+    console.log("onInputFocus")
     this.scrollToBottom(this.data.animationDuration);
   },
-  
 });

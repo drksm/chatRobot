@@ -59,7 +59,7 @@
   width: 8px;
   height: 1em;
   animation: blink 1s infinite;
-  transform: translate(12px,12px);
+  transform: translate(2px,13px);
 }
 
 @keyframes blink {
@@ -84,7 +84,6 @@
 }
 
 .input-container {
-  height: 50px;
   display: flex;
   align-items: center;
   padding: 10px;
